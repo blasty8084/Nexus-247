@@ -1,0 +1,48 @@
+Cosmic Smart Dashboard – Version 6.8.6
+======================================
+
+🔖 Release Name: "Cosmic Horizon"
+🗓️ Build Date: 2025-10-17
+🧩 Build Type: Stable (Production)
+💾 Compatibility: Node.js v22+, WebSocket v4+, Chrome 114+, Android 10+, iOS 15+
+
+──────────────────────────────────────────────
+🆕 PATCH NOTES – v6.8.6
+──────────────────────────────────────────────
+✅ Added: Auto-adjusting icon scaling (responsive to DPI / resolution)
+✅ Added: 60–120 FPS adaptive animation engine for icons (GPU-optimized)
+✅ Added: PWA full support (installable on Android/iOS/Desktop)
+✅ Added: Loading overlay with animated ring + welcome message
+✅ Added: System requirement detector for Android/iOS/Desktop
+✅ Added: Optimized resource cache (Workbox integration)
+✅ Added: Version tracking (auto fetch version.txt on reload)
+✅ Added: Dashboard offline mode indicator
+✅ Added: Enhanced socket telemetry with low-latency optimization
+✅ Added: Dynamic sound feedback system (connect/disconnect/reload/notify)
+✅ Added: Smooth theme transitions (Cosmic Horizon theme)
+✅ Added: Manifest + favicon support for all devices
+✅ Added: Auto-refresh toggle and memory-safe intervals
+✅ Added: Log-friendly timestamp format for backend logs
+✅ Added: Optimized build and cleanup scripts (build-assets.js / cleanup.js)
+
+🛠️ Improved:
+- Faster load times (≈40% less blocking)
+- Smaller bundle size (≈30% optimized CSS/JS)
+- Adaptive FPS engine for low and high-end devices
+- Better dark/light detection and smooth transition
+
+🐛 Fixed:
+- Memory leak on reconnect loop
+- Dashboard freeze on network loss
+- Incorrect uptime countdown rendering
+- Plugin reload desync issue
+
+──────────────────────────────────────────────
+📦 File Integrity Checksum
+──────────────────────────────────────────────
+Frontend Bundle Hash:  b6a0e9a5cfe-20251017
+Backend Core Hash:    f3d9a1b8cc2-20251017
+
+──────────────────────────────────────────────
+© 2025 Cosmic Labs — All Rights Reserved.
+──────────────────────────────────────────────

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>🌌 Cosmic Dashboard — v6.8.6</title>
+  <meta name="theme-color" content="#071126">
+  <link rel="icon" href="icons/favicon.ico" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- SECURITY BANNER -->
+  <div id="security-banner" class="security-banner" hidden>
+    ⚠️ Public Mode Enabled — Dashboard accessible externally. Use with care.
+  </div>
+
+  <!-- OVERLAY / LOADER -->
+  <div id="overlay" class="overlay show" aria-hidden="false">
+    <div class="overlay-card" role="status" aria-live="polite">
+      <svg viewBox="0 0 120 120" class="loader-ring" width="120" height="120" aria-hidden="true">
+        <circle class="ring-bg" cx="60" cy="60" r="48" stroke-width="10" fill="none"></circle>
+        <circle id="ringArc" class="ring-arc" cx="60" cy="60" r="48" stroke-width="10" stroke-linecap="round"
+                fill="none" stroke-dasharray="302" stroke-dashoffset="302"></circle>
+      </svg>
+      <div class="overlay-percent"><span id="overlay-percent">0</span>%</div>
+      <div id="overlay-message" class="overlay-message">Initializing…</div>
+      <div id="welcome-message" class="welcome-message" hidden>🤖 Welcome — Cosmic Bot Ready</div>
+    </div>
+  </div>
+
+  <!-- CONNECTION BUBBLE -->
+  <div id="conn-bubble" class="conn-bubble" title="Connection status"></div>
+
+  <div class="container" id="app" hidden>
+    <header class="topbar">
+      <div class="brand">
+        <img src="icons/cosmic-logo-192.png" alt="Cosmic" class="logo" width="44" height="44" />
+        <div class="brand-text">
+          <h1>Cosmic Dashboard</h1>
+          <div class="muted small">v<span id="versionTag">6.8.6</span> • <span id="meta-status">—</span></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="theme-toggle" class="icon-btn" title="Toggle theme" aria-pressed="false">
+          <img src="icons/theme.svg" alt="theme" class="svg-16">
+        </button>
+
+        <button id="mute-toggle" class="icon-btn" title="Mute/unmute" aria-pressed="false">
+          <img src="icons/notify.svg" alt="notify" class="svg-16">
+        </button>
+
+        <input id="auth-token" class="auth-input" placeholder="Admin token (optional)" type="password" />
+        <button id="save-auth" class="btn">Save</button>
+      </div>
+    </header>
+
+    <main class="grid" id="main-grid">
+      <!-- STATUS -->
+      <section class="card status-card" id="status-card">
+        <div class="card-head">
+          <h2>Status</h2>
+          <div id="status-badge" class="status offline">
+            <img id="status-icon" src="icons/bot-offline.svg" alt="" width="18" height="18">
+            <span id="status-text">Offline</span>
+          </div>
+        </div>
+
+        <div class="status-grid">
+          <div class="stat"><small>Username</small><div id="username">—</div></div>
+          <div class="stat"><small>Server</small><div id="server">—</div></div>
+          <div class="stat"><small>Uptime</small><div id="uptime">00:00:00</div></div>
+          <div class="stat"><small>Plugins</small><div id="plugin-count">0</div></div>
+        </div>
+
+        <div class="mini-row">
+          <div class="mini"><img src="icons/cpu.svg" class="svg-16" alt=""> <span id="cpu">—</span></div>
+          <div class="mini"><img src="icons/ram.svg" class="svg-16" alt=""> <span id="ram">—</span></div>
+          <div class="mini"><img src="icons/tps.svg" class="svg-16" alt=""> <span id="tps">—</span></div>
+        </div>
+
+        <div class="actions-row">
+          <button id="start-btn" class="btn main"><img src="icons/enable.svg" alt=""> Start</button>
+          <button id="stop-btn" class="btn"><img src="icons/disable.svg" alt=""> Stop</button>
+          <button id="restart-btn" class="btn"><img src="icons/reload.svg" alt=""> Restart</button>
+        </div>
+      </section>
+
+      <!-- PLUGINS -->
+      <section class="card plugins-card">
+        <div class="card-head">
+          <h2>Plugins</h2>
+          <div class="muted small" id="plugins-meta">—</div>
+        </div>
+        <div class="plugins-controls">
+          <button id="reload-all" class="btn">🔁 Reload All</button>
+          <button id="cloud-sync" class="btn">☁️ Cloud Sync</button>
+        </div>
+        <div id="plugins" class="plugins-list"><em class="muted">No plugins loaded</em></div>
+      </section>
+
+      <!-- LOGS -->
+      <section class="card logs-card">
+        <div class="card-head">
+          <h2>Live Logs</h2>
+          <div id="log-count" class="muted small">0 lines</div>
+        </div>
+        <div class="log-tools">
+          <input id="log-search" placeholder="Search logs..." />
+          <select id="log-level">
+            <option value="">All</option>
+            <option value="info">Info</option>
+            <option value="success">Success</option>
+            <option value="warn">Warn</option>
+            <option value="error">Error</option>
+          </select>
+          <button id="clear-logs" class="btn">Clear</button>
+        </div>
+        <div id="logs" class="logs" aria-live="polite"></div>
+      </section>
+
+      <!-- PERFORMANCE -->
+      <section class="card perf-card">
+        <h2>Performance</h2>
+        <canvas id="perf-chart" height="120" aria-hidden="false"></canvas>
+      </section>
+
+      <!-- SESSION -->
+      <section class="card session-card">
+        <h2>Session</h2>
+        <div class="session-grid">
+          <div><small>Connected</small><div id="session-time">—</div></div>
+          <div><small>Reloads</small><div id="session-reloads">0</div></div>
+          <div><small>Actions</small><div id="session-actions">0</div></div>
+        </div>
+        <div style="margin-top:12px"><button id="export-session" class="btn">Export Session</button></div>
+      </section>
+
+      <!-- THEME & LAYOUT -->
+      <section class="card theme-card">
+        <h2>Theme & Layout</h2>
+        <label>Accent color: <input id="accent" type="color" value="#9966FF"></label>
+        <label style="display:block;margin-top:8px">Layout:
+          <select id="layout-mode">
+            <option value="auto">Auto</option>
+            <option value="compact">Compact</option>
+            <option value="comfortable">Comfortable</option>
+          </select>
+        </label>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <button id="dock-reload" class="icon-btn" title="Reload"><img src="icons/reload.svg" alt=""></button>
+        <button id="dock-start" class="icon-btn" title="Start"><img src="icons/enable.svg" alt=""></button>
+        <button id="dock-stop" class="icon-btn" title="Stop"><img src="icons/disable.svg" alt=""></button>
+      </div>
+      <div class="footer-right muted small">
+        Cosmic Dashboard • v<span id="versionFooter">6.8.6</span>
+        <span class="footer-spacer">•</span>
+        <a class="social" href="mailto:your-email@example.com" target="_blank" rel="noreferrer">
+          <svg class="svg-social" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2h15A2.5 2.5 0 0 1 22 4.5v15A2.5 2.5 0 0 1 19.5 22h-15A2.5 2.5 0 0 1 2 19.5zM4 6v12l6.5-4L17 18V6l-6.5 4L4 6z"/></svg>
+        </a>
+        <a class="social" href="https://github.com/yourusername" target="_blank" rel="noreferrer" title="GitHub">
+          <img src="icons/github.svg" alt="GitHub" width="16" height="16">
+        </a>
+        <a class="social" href="https://twitter.com/yourusername" target="_blank" rel="noreferrer" title="Twitter">
+          <img src="icons/twitter.svg" alt="Twitter" width="16" height="16">
+        </a>
+        <a class="social" href="https://instagram.com/yourusername" target="_blank" rel="noreferrer" title="Instagram">
+          <img src="icons/instagram.svg" alt="Instagram" width="16" height="16">
+        </a>
+        <a class="social" href="https://discord.gg/yourserver" target="_blank" rel="noreferrer" title="Discord">
+          <img src="icons/discord.svg" alt="Discord" width="16" height="16">
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toast-wrap" class="toast-wrap" aria-live="polite"></div>
+
+  <!-- AUDIO -->
+  <audio id="snd-connect" src="sounds/connect.mp3" preload="auto"></audio>
+  <audio id="snd-disconnect" src="sounds/disconnect.mp3" preload="auto"></audio>
+  <audio id="snd-info" src="sounds/info.mp3" preload="auto"></audio>
+  <audio id="snd-reload" src="sounds/reload.mp3" preload="auto"></audio>
+  <audio id="snd-retry" src="sounds/retry.mp3" preload="auto"></audio>
+</body>
+</html>
