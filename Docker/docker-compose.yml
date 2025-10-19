@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  cosmic-dashboard:
+    container_name: cosmic-dashboard
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile
+    env_file:
+      - ../.env
+    ports:
+      - "3000:3000"
+    restart: always
+    volumes:
+      - ../logs:/app/logs
+      - ../plugins:/app/plugins
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  cosmic-dashboard-dev:
+    container_name: cosmic-dashboard-dev
+    build:
+      context: ..
+      dockerfile: ./docker/Dockerfile.dev
+    env_file:
+      - ../.env.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ..:/app
+      - /app/node_modules
+    command: ["nodemon", "--legacy-watch", "index.js"]
+    restart: unless-stopped

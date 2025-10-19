@@ -1,0 +1,54 @@
+# ================================
+# 🚀 Cosmic Dashboard Docker Ignore
+# ================================
+
+# Node modules (we install inside container)
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local logs
+logs
+*.log
+*.log.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (optional, managed separately)
+.env
+.env.local
+.env.dev
+
+# Build artifacts
+dist
+build
+.pwa
+.cache
+.tmp
+
+# IDE / Editor settings
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Tests / temporary
+coverage
+*.test.js
+*.spec.js
+__tests__/
+*.tmp
+
+# Ignore other system files
+*.swp
+*.swo
+*.bak
+*.old
