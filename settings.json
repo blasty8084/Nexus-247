@@ -1,0 +1,98 @@
+{
+  "botAccount": {
+    "username": "CosmicBot",
+    "password": "",
+    "type": "mojang",
+    "autoLogin": true,
+    "skinSync": true
+  },
+
+  "server": {
+    "ip": "Blasty8084.aternos.me",
+    "port": 31042,
+    "version": "1.12.1",
+    "autoReconnect": true,
+    "pingInterval": 5000
+  },
+
+  "dashboard": {
+    "port": 3000,
+    "theme": "cosmic-horizon",
+    "telemetry": true,
+    "autoRefresh": true,
+    "publicMode": false,
+    "https": false,
+    "maxConnections": 25
+  },
+
+  "reconnect": {
+    "onCrashRestart": true,
+    "delayBase": 5000,
+    "maxRetries": 5,
+    "gracePeriod": 15000
+  },
+
+  "plugins": {
+    "enabled": true,
+    "path": "./plugins",
+    "autoReload": true,
+    "syncCloud": true,
+    "verifyIntegrity": true
+  },
+
+  "logging": {
+    "level": "info",
+    "fileOutput": true,
+    "logFolder": "./logs",
+    "maxFileSizeMB": 5,
+    "maxRetentionDays": 7,
+    "colorize": true
+  },
+
+  "feedback": {
+    "enabled": true,
+    "collectPerformance": true,
+    "reportCrashes": true,
+    "autoSubmit": false
+  },
+
+  "telemetry": {
+    "emitInterval": 3000,
+    "optimizeEmit": true,
+    "maxPingVariance": 10,
+    "maxMemoryVariance": 1,
+    "trackFPS": true,
+    "includeDeviceInfo": true
+  },
+
+  "advanced": {
+    "pathfinder": true,
+    "autoRespawn": true,
+    "safetyTimeout": 15000,
+    "smartReconnect": true,
+    "watchdog": true,
+    "latencyGuard": true
+  },
+
+  "notifications": {
+    "soundEnabled": true,
+    "volume": 0.8,
+    "desktopAlerts": true,
+    "logToConsole": true
+  },
+
+  "security": {
+    "authToken": "",
+    "ipWhitelist": [],
+    "rateLimit": 30,
+    "csrfProtection": true
+  },
+
+  "system": {
+    "version": "6.8.6",
+    "build": "stable",
+    "releaseDate": "2025-10-17",
+    "requirementCheck": true,
+    "autoUpdate": true
+  }
+}

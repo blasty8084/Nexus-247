@@ -1,0 +1,61 @@
+# .replit — Cosmic Dashboard V6.8.5
+entrypoint = "index.js"
+language = "nodejs"
+modules = ["nodejs-22"]
+hidden = [".config", "package-lock.json", "node_modules"]
+
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix", "package.json", "package-lock.json"]
+
+[nix]
+channel = "stable-24_11"
+
+[deployment]
+run = ["npm", "start"]
+deploymentTarget = "autoscale"
+ignorePorts = false
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[env]
+PORT = "3000"
+NODE_ENV = "development"
+PUBLIC_MODE = "false"
+ADMIN_SECRET = "cosmic-secure-default"
+
+[packager]
+language = "nodejs"
+
+[packager.features]
+packageSearch = true
+guessImports = true
+
+[unitTest]
+language = "nodejs"
+
+[agent]
+expertMode = true
+
+# --- ⚙️ Automatic npm, dependency, and audit fixer ---
+run = "bash"
+onBoot = """
+echo "🌌 Starting Cosmic Dashboard V6.8.5..."
+echo "Node version: $(node -v)"
+echo "NPM version: $(npm -v)"
+
+# Clean old modules and lock file
+rm -rf node_modules package-lock.json
+
+# Fresh dependency install
+npm install && npm update
+echo "✅ Dependencies installed & updated"
+
+# Fix vulnerabilities automatically
+npm audit fix --force || true
+echo "✅ Vulnerabilities auto-fixed (if possible)"
+
+# Start dashboard in dev mode with hot reload
+npm run dev
+"""

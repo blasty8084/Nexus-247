@@ -1,0 +1,136 @@
+{
+  "name": "cosmic-dashboard-v6.8",
+  "version": "6.8.5",
+  "description": "🚀 Cosmic Dashboard V6.8.5 (LTS+++) — Advanced Minecraft Bot System with Real-time Dashboard, Plugin Loader, Smart Reconnect, Auto Optimization, PWA, and Deployment Automation.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "verify": "node scripts/verify-environment.js",
+    "start": "npm run verify && node index.js",
+    "dev": "nodemon index.js",
+    "dashboard": "node web.js",
+    "clean": "node scripts/cleanup.js",
+    "optimize": "node scripts/optimize-assets.js",
+    "icons": "node scripts/generate-icons.js",
+    "build": "npm run clean && npm run optimize && node scripts/build-assets.js && npm run update-version && npm run pwa:inject",
+    "lint": "eslint . --fix",
+    "test": "node --test",
+    "summary": "node scripts/deploy-summary.js",
+    "update-version": "node scripts/update-version.js",
+    "predeploy": "node scripts/pre-deploy-check.js",
+    "deploy": "npm run predeploy && node scripts/upload-assets.js",
+    "deploy:local": "DEPLOY_MODE=local npm run deploy",
+    "deploy:github": "DEPLOY_MODE=github npm run deploy",
+    "deploy:cdn": "DEPLOY_MODE=cdn npm run deploy",
+    "pwa:generate": "workbox generateSW workbox-config.js",
+    "pwa:inject": "workbox injectManifest workbox-config.js",
+    "pwa:rebuild": "npm run icons && npm run build && npm run pwa:inject",
+    "verify:pwa": "node scripts/verify-pwa.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.4",
+    "chalk": "^5.3.0",
+    "chokidar": "^4.0.3",
+    "compression": "^1.7.5",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.1",
+    "fs-extra": "^11.2.0",
+    "helmet": "^8.0.0",
+    "mineflayer": "^3.17.0",
+    "mineflayer-pathfinder": "^1.7.0",
+    "minecraft-data": "^3.74.0",
+    "minecraft-protocol": "^1.63.0",
+    "moment": "^2.30.1",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^4.8.2",
+    "vec3": "^0.1.8",
+    "workbox-build": "^7.1.1",
+    "sharp": "^0.33.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "eslint": "^9.12.0",
+    "uglify-js": "^3.19.3",
+    "clean-css-cli": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "author": "Uttam Sahu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uttamsahu/Cosmic-Dashboard-v6.8.git"
+  },
+  "bugs": {
+    "url": "https://github.com/uttamsahu/Cosmic-Dashboard-v6.8/issues"
+  },
+  "homepage": "https://github.com/uttamsahu/Cosmic-Dashboard-v6.8#readme",
+  "keywords": [
+    "minecraft-bot",
+    "cosmic-dashboard",
+    "mineflayer",
+    "plugin-system",
+    "websocket",
+    "automation",
+    "realtime-logs",
+    "dashboard-ui",
+    "smart-reconnect",
+    "auto-optimize",
+    "pwa",
+    "nodejs",
+    "express",
+    "socket.io",
+    "docker",
+    "service-worker",
+    "workbox",
+    "offline-mode",
+    "cosmic-bot",
+    "android",
+    "ios",
+    "desktop",
+    "deployment",
+    "ci-cd"
+  ],
+  "cosmic": {
+    "pwa": true,
+    "versionLabel": "Cosmic Horizon 6.8.5 (LTS+++ / AutoOptimize)",
+    "minifiedAssets": true,
+    "mobileOptimized": true,
+    "fpsAdaptive": true,
+    "autoOptimize": true,
+    "workboxMode": "injectManifest",
+    "telemetryEnhancement": true,
+    "welcomeOverlay": true
+  },
+  "docker": {
+    "image": "cosmic-dashboard:6.8.5",
+    "maintainer": "Uttam Sahu <uttamdev@proton.me>",
+    "expose": [3000, 25565],
+    "volumes": ["./plugins", "./logs"],
+    "restart": "always"
+  },
+  "platformSupport": {
+    "android": {
+      "minVersion": "9",
+      "recommended": "14+",
+      "pwaInstallable": true,
+      "fpsRange": "60-120",
+      "gpuAcceleration": true
+    },
+    "ios": {
+      "minVersion": "14",
+      "recommended": "17+",
+      "pwaInstallable": true,
+      "fpsRange": "60",
+      "gpuAcceleration": true
+    },
+    "desktop": {
+      "os": ["Windows 10+", "macOS 12+", "Linux (Ubuntu 22+)"],
+      "browser": ["Chrome", "Edge", "Firefox", "Safari"],
+      "fpsRange": "60-144",
+      "hardwareAcceleration": true
+    }
+  }
+}
